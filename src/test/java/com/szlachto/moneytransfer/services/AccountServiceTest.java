@@ -13,6 +13,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.szlachto.moneytransfer.utils.CurrencyUtil.getBigDecimalValue;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccountServiceTest extends ServiceTest {
@@ -23,8 +25,7 @@ public class AccountServiceTest extends ServiceTest {
         HttpGet request = new HttpGet(uri);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-
-        assertEquals(200, statusCode);
+        assertEquals(OK.getStatusCode(), statusCode);
 
         String jsonString = EntityUtils.toString(response.getEntity());
         Account account = mapper.readValue(jsonString, Account.class);
@@ -33,15 +34,15 @@ public class AccountServiceTest extends ServiceTest {
 
     @Test
     public void testGetAccountBalance() throws IOException, URISyntaxException {
-        URI uri = URI_BUILDER.setPath("/account/1/balance").build();
+        URI uri = URI_BUILDER.setPath("/account/4/balance").build();
         HttpGet request = new HttpGet(uri);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(200, statusCode);
+        assertEquals(OK.getStatusCode(), statusCode);
 
         String balance = EntityUtils.toString(response.getEntity());
         BigDecimal res = getBigDecimalValue(balance);
-        BigDecimal db = getBigDecimalValue(400);
+        BigDecimal db = getBigDecimalValue(500);
         assertEquals(db, res);
     }
 
@@ -52,7 +53,7 @@ public class AccountServiceTest extends ServiceTest {
         request.setHeader("Content-type", "application/json");
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(200, statusCode);
+        assertEquals(OK.getStatusCode(), statusCode);
 
         String jsonString = EntityUtils.toString(response.getEntity());
         Account afterDeposit = mapper.readValue(jsonString, Account.class);
@@ -66,7 +67,7 @@ public class AccountServiceTest extends ServiceTest {
         request.setHeader("Content-type", "application/json");
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(200, statusCode);
+        assertEquals(OK.getStatusCode(), statusCode);
 
         String jsonString = EntityUtils.toString(response.getEntity());
         Account afterDeposit = mapper.readValue(jsonString, Account.class);
@@ -80,7 +81,6 @@ public class AccountServiceTest extends ServiceTest {
         request.setHeader("Content-type", "application/json");
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        String responseBody = EntityUtils.toString(response.getEntity());
-        assertEquals(500, statusCode);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), statusCode);
     }
 }

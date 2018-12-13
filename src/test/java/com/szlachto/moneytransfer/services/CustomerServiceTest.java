@@ -20,7 +20,7 @@ public class CustomerServiceTest extends ServiceTest {
 
     @Test
     public void testGetCustomer() throws IOException, URISyntaxException {
-        URI uri = URI_BUILDER.setPath("/customer/TonyStark").build();
+        URI uri = URI_BUILDER.setPath("/customer/SteveRogers").build();
         HttpGet request = new HttpGet(uri);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
@@ -28,7 +28,7 @@ public class CustomerServiceTest extends ServiceTest {
 
         String jsonString = EntityUtils.toString(response.getEntity());
         Customer customer = mapper.readValue(jsonString, Customer.class);
-        assertEquals("TonyStark", customer.getCustomerName());
+        assertEquals("SteveRogers", customer.getCustomerName());
     }
 
     @Test

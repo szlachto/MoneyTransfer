@@ -12,6 +12,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import static com.szlachto.moneytransfer.utils.CurrencyUtil.getBigDecimalValue;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransactionServiceTest extends ServiceTest {
@@ -29,7 +31,7 @@ public class TransactionServiceTest extends ServiceTest {
         request.setEntity(entity);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(200, statusCode);
+        assertEquals(OK.getStatusCode(), statusCode);
     }
 
     @Test
@@ -44,7 +46,7 @@ public class TransactionServiceTest extends ServiceTest {
         request.setEntity(entity);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(500, statusCode);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), statusCode);
     }
 
     @Test
@@ -60,6 +62,6 @@ public class TransactionServiceTest extends ServiceTest {
         request.setEntity(entity);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-        assertEquals(500, statusCode);
+        assertEquals(INTERNAL_SERVER_ERROR.getStatusCode(), statusCode);
     }
 }
